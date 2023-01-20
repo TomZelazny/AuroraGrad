@@ -1,5 +1,4 @@
 import torch
-import torch.nn as nn
 
 
 def PGD(m1, m2, initial_input, input_min, input_max, iterations):
@@ -11,6 +10,6 @@ def PGD(m1, m2, initial_input, input_min, input_max, iterations):
         x.requires_grad = True
         loss = torch.abs(m1(x) - m2(x))
         loss.backward()
-        x = x + step_size * x.grad.data
+        x = x + step_size * x.grad.data.sign()
         x = torch.clamp(x, input_min, input_max).detach_()
     return x
