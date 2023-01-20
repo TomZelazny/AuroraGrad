@@ -3,7 +3,6 @@ import torch
 import torch.nn as nn
 
 
-# %%
 def get_aurora_model() -> nn.Module:
     return nn.Sequential(
         nn.Linear(30, 32),  # input layer
@@ -14,24 +13,13 @@ def get_aurora_model() -> nn.Module:
     )
 
 
-def get_cartpole_model() -> nn.Sequential:
-    return nn.Sequential(
-        nn.Linear(4, 32),
-        nn.ReLU(),
-        nn.Linear(32, 16),
-        nn.ReLU(),
-        nn.Linear(16, 1)
-    )
-
-
-# %%
 def load_policy_network(state_dict_path: str, model_type: str) -> nn.Module:
-    model = get_cartpole_model() if model_type == "Cartpole" else get_aurora_model()
+    model = get_aurora_model()
     model.load_state_dict(torch.load(state_dict_path))
     return model
 
 
-def load_models(first_seed=1, second_seed=2, full_model_path=f"Cartpole"):
+def load_models(first_seed=1, second_seed=2, full_model_path=f"Aurora"):
     model_1_state_dict_path = os.path.join(full_model_path, f"model_{first_seed}.pt")
     model_1 = load_policy_network(model_1_state_dict_path, full_model_path)
     model_1.eval()
